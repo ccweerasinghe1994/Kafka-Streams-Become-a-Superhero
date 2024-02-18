@@ -102,6 +102,45 @@ we can make our own custom serializer and deserializer
 
 ## 5. Serdes - Hands-on
 
+```java
+package com.wchamara.kafkasampleapp.topology;
+
+import com.google.gson.Gson;
+import com.wchamara.kafkasampleapp.dto.MovieQuotes;
+import com.wchamara.kafkasampleapp.util.KufkaSerdisUtil;
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.Consumed;
+import org.apache.kafka.streams.kstream.KTable;
+import org.apache.kafka.streams.kstream.Materialized;
+
+//@Component
+public class KTableTopology {
+    Gson gson = new Gson();
+
+    //    @Bean
+    public Topology createTopology() {
+        StreamsBuilder builder = new StreamsBuilder();
+        Materialized materialized = Materialized.as("movies-quotes");
+        Materialized materializedWithDefault = Materialized.as("movies-quotes-with-default");
+
+        KTable simpleConsumerDefault = builder.table("star-wars-quotes");
+        KTable matierializedConsumerDefault = builder.table("disney-quotes", materializedWithDefault);
+        KTable<String, MovieQuotes> simpleConsumer = builder.table("arnold-schwarzenegger-quotes", Consumed.with(Serdes.String(), KufkaSerdisUtil.getSerde(MovieQuotes.class, gson)));
+        KTable matierializedConsumer = builder.table("basketball-quotes", Consumed.with(Serdes.String(), Serdes.String()), materialized);
+
+        simpleConsumerDefault.toStream().to("simpleConsumerDefault");
+        matierializedConsumerDefault.toStream().to("matierializedConsumerDefault");
+        simpleConsumer.toStream().to("simpleConsumer");
+        matierializedConsumer.toStream().to("matierializedConsumer");
+
+        return builder.build();
+    }
+}
+
+```
+
 ## 6. Tasks
 
 ![alt text](image-46.png)
@@ -160,25 +199,99 @@ taxis are the threads
 ## 8. KStream
 
 ![alt text](image-90.png)
-
-
-
-
-
-
-
-
-
+![alt text](image-91.png)
+![alt text](image-92.png)
+![alt text](image-93.png)
+![alt text](image-94.png)
+![alt text](image-95.png)
+![alt text](image-96.png)
+![alt text](image-97.png)
+![alt text](image-98.png)
+![alt text](image-99.png)
+![alt text](image-100.png)
+![alt text](image-101.png)
+![alt text](image-102.png)
+![alt text](image-103.png)
+![alt text](image-104.png)
+![alt text](image-105.png)
 
 ## 9. KStream - Hands-on
 
 ## 10. KTable
 
+![ ](image-106.png)
+![alt text](image-107.png)
+![alt text](image-108.png)
+![alt text](image-109.png)
+![alt text](image-110.png)
+![alt text](image-111.png)
+![alt text](image-112.png)
+![alt text](image-113.png)
+![alt text](image-114.png)
+![alt text](image-115.png)
+![alt text](image-116.png)
+![alt text](image-117.png)
+![alt text](image-118.png)
+![alt text](image-119.png)
+![alt text](image-120.png)
+![alt text](image-121.png)
+![alt text](image-122.png)
+![alt text](image-123.png)
+![alt text](image-124.png)
+![alt text](image-125.png)
+
 ## 11. KTable -  Hands-on
 
 ## 12. GlobalKTable
 
+![alt text](image-126.png)
+![alt text](image-127.png)
+![alt text](image-128.png)
+![alt text](image-129.png)
+![alt text](image-130.png)
+![alt text](image-131.png)
+![alt text](image-132.png)
+![alt text](image-133.png)
+![alt text](image-134.png)
+![alt text](image-135.png)
+![alt text](image-136.png)
+![alt text](image-137.png)
+![alt text](image-138.png)
+
 ## 13. GlobalKTable - Hands-on
+
+```java
+package com.wchamara.kafkasampleapp.topology;
+
+import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.Consumed;
+import org.apache.kafka.streams.kstream.GlobalKTable;
+import org.apache.kafka.streams.kstream.Materialized;
+
+//@Component
+public class GlobalKTableTopology {
+    //    @Bean
+    public Topology createTopology() {
+        StreamsBuilder builder = new StreamsBuilder();
+        Materialized materialized = Materialized.as("movies-quotes");
+        Materialized materializedWithDefault = Materialized.as("movies-quotes-with-default");
+
+        GlobalKTable simpleConsumerDefault = builder.globalTable("star-wars-quotes");
+        GlobalKTable matierializedConsumerDefault = builder.globalTable("disney-quotes", materializedWithDefault);
+        GlobalKTable simpleConsumer = builder.globalTable("arnold-schwarzenegger-quotes", Consumed.with(Serdes.String(), Serdes.String()));
+        GlobalKTable matierializedConsumer = builder.globalTable("basketball-quotes", Consumed.with(Serdes.String(), Serdes.String()), materialized);
+
+//        simpleConsumerDefault.toStream().to("simpleConsumerDefault");
+//        matierializedConsumerDefault.toStream().to("matierializedConsumerDefault");
+//        simpleConsumer.toStream().to("simpleConsumer");
+//        matierializedConsumer.toStream().to("matierializedConsumer");
+
+        return builder.build();
+    }
+}
+```
 
 ## 14. Processor (PAPI)
 

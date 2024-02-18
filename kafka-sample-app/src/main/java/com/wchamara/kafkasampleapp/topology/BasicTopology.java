@@ -2,12 +2,10 @@ package com.wchamara.kafkasampleapp.topology;
 
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class BasicTopology {
-    @Bean
+    //    @Bean
     public Topology createTopology() {
         StreamsBuilder builder = new StreamsBuilder();
 
