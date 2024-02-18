@@ -53,6 +53,30 @@ Kafka Streams is a client library for building applications and microservices, w
 
 ## 3. Topology - Hands-on
 
+![alt text](image-31.png)
+
+```java
+package com.wchamara.kafkasampleapp.topology;
+
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.Topology;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+@Component
+public class BasicTopology {
+    @Bean
+    public Topology createTopology() {
+        StreamsBuilder builder = new StreamsBuilder();
+
+        // Add your topology here
+
+        return builder.build();
+    }
+}
+
+```
+
 ## 4. Serdes
 
 ## 5. Serdes - Hands-on
